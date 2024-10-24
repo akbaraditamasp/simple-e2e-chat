@@ -1,0 +1,8 @@
+<div class="flex" :class="{{ $props.fromMe }} ? 'justify-start':'justify-end'">
+    <div
+        class="py-2 px-3 rounded-full mb-3"
+        :class="{{ $props.fromMe }} ? 'bg-white':'bg-lime-100'"
+        x-text="{{ $props.get('text') }}"
+    >
+    </div>
+</div>

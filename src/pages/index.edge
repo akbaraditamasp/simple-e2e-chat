@@ -1,0 +1,141 @@
+@document()
+    @!loader({
+    show: '!$store.user.data'
+    })
+    <div
+        class="absolute top-0 left-0 right-0 bottom-0 bg-gradient-to-br from-yellow-200 to-emerald-200"
+    >
+    </div>
+    <div
+        x-show="$store.user.data"
+        class="flex justify-start items-stretch absolute top-0 left-0 right-0 bottom-0 doodle"
+    >
+        <div
+            x-data="{
+                newChat: false
+            }"
+            class="w-[360px] h-full bg-white shadow-lg flex flex-col border-r border-gray-300 relative"
+        >
+            <div class="flex justify-start items-center">
+                <button
+                    x-show="newChat"
+                    @click="newChat = false"
+                    type="button"
+                    class="w-10 h-10 flex justify-center items-center text-xl ml-1"
+                >
+                    <iconify-icon icon="mdi:arrow-back">
+                    </iconify-icon>
+                </button>
+                <div class="relative py-2 px-3 flex-1 group">
+                    <input
+                        type="text"
+                        class="w-full h-10 outline-none pr-6 pl-10 border rounded-full border-gray-200 focus:border-emerald-600"
+                        @input.debounce.500ms="(e) => { $store.userList.find(e.target.value) }"
+                    />
+                    <div
+                        class="absolute top-0 left-4 bottom-0 w-10 flex justify-center items-center group-focus-within:text-emerald-700"
+                    >
+                        <iconify-icon icon="fe:search">
+                        </iconify-icon>
+                    </div>
+                </div>
+            </div>
+            <div x-show="!newChat" class="flex-1 relative" data-overlayscrollbars-initialize>
+                <div
+                    x-data="overlayScroll"
+                    class="absolute top-0 left-0 w-full h-full overflow-auto px-1 pr-3"
+                >
+                    <template x-for="conversation in $store.chatList.data">
+                        @!conversation({
+                            name: "conversation.conversationInfo.displayName",
+                            lastChat: "conversation.chats[conversation.chats.length - 1].text",
+                            '@click': "$store.watchedConversation.watch(conversation.cuid)"
+                        })
+                    </template>
+                </div>
+            </div>
+            <div x-show="newChat" class="flex-1 relative" data-overlayscrollbars-initialize>
+                <div
+                    x-data="overlayScroll"
+                    class="absolute top-0 left-0 w-full h-full overflow-auto px-1 pr-3"
+                >
+                    <template x-for="user in $store.userList.data">
+                        @!user({
+                            name: "user.displayName",
+                            online: "user.isOnline",
+                            '@click': '$store.watchedConversation.watch(user.cuid)'
+                        })
+                    </template>
+                </div>
+            </div>
+            <button
+                x-show="!newChat"
+                @click="newChat = true"
+                type="button"
+                class="absolute bottom-5 right-5 w-12 h-12 bg-emerald-600 rounded-full flex justify-center items-center text-white text-xl shadow-lg hover:bg-emerald-700"
+            >
+                <iconify-icon icon="streamline:chat-bubble-square-write">
+                </iconify-icon>
+            </button>
+        </div>
+        <div x-data class="flex-1 flex flex-col" x-show="$store.watchedConversation.cuid">
+            <div
+                class="bg-white py-3 px-8 flex justify-start items-center shadow-lg space-x-3"
+            >
+                <div
+                    class="w-12 h-12 bg-gray-100 border rounded-full flex justify-center items-center text-4xl"
+                >
+                    <iconify-icon icon="lets-icons:chat-duotone">
+                    </iconify-icon>
+                </div>
+                <div class="flex-1">
+                    <div
+                        class="font-bold text-gray-800"
+                        x-text="$store.watchedConversation.info.displayName"
+                    >
+                    </div>
+                    <div class="flex justify-start items-center space-x-1 text-sm">
+                        <div
+                            class="w-2 h-2 rounded-full"
+                            :class="$store.watchedConversation.info.isOnline ? 'bg-emerald-600':'bg-gray-300'"
+                        >
+                        </div>
+                        <div x-text="$store.watchedConversation.info.isOnline ? 'Online':'Offline'">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 relative" data-overlayscrollbars-initialize>
+                <div
+                    class="absolute top-0 left-0 w-full h-full p-8 overflow-auto"
+                    x-data="overlayScroll"
+                >
+                    <template x-for="chat in $store.watchedConversation.conversation?.chats">
+                        @!chat({ text: "chat.text", fromMe:"chat.sender.cuid !== $store.user.data.cuid" })
+                    </template>
+                </div>
+            </div>
+            <div class="flex justify-center py-5 px-[20%]">
+                <div
+                    class="bg-white w-full flex justify-start items-end p-1 shadow-lg"
+                    style="border-radius: 1.5rem;"
+                >
+                    <div
+                        class="flex-1 min-h-full outline-none p-3"
+                        x-data="controlledDiv"
+                        contenteditable
+                    >
+                    </div>
+                    <button
+                        type="button"
+                        class="w-12 h-12 rounded-full bg-emerald-600 flex justify-center items-center text-lg text-white"
+                    >
+                        <iconify-icon icon="fa:send">
+                        </iconify-icon>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @!script()
+@end

@@ -1,0 +1,72 @@
+@document.login()
+    @!loader({show: "$store.loading.status"})
+    <div
+        x-data
+        class="bg-gray-200 min-h-screen w-full flex flex-col justify-center items-center p-20"
+        x-show="!$store.loading.status"
+    >
+        @!logo({class: "w-16 h-16 text-3xl mb-5"})
+        <h1 class="font-bold font-montserrat text-gray-700 text-3xl">
+            Welcome 👋
+        </h1>
+        <div class="w-2/5 bg-white rounded-lg mt-12">
+            <div class="p-8">
+                <form x-data="register" @submit.prevent="submit()">
+                    <h2 class="font-montserrat text-lg text-gray-700 font-bold">
+                        Get Started
+                    </h2>
+                    <p class="mb-5">
+                        Choose your catchy display name
+                    </p>
+                    @form.textField({
+                            containerClassName: "mb-5",
+                            message: "errors.displayName",
+                            type: "text",
+                            'x-model': "data.displayName"
+                    })
+                        @slot("left")
+                            <iconify-icon icon="tabler:user-filled" class="text-xl text-gray-500">
+                            </iconify-icon>
+                        @end
+                    @end
+                    @button({
+                          type: "submit",
+                          class: "bg-emerald-600 text-white"
+                    })
+                        Start
+                        @slot('right')
+                            <iconify-icon icon="mingcute:arrow-right-line">
+                            </iconify-icon>
+                        @end
+                    @end
+                </form>
+
+                <div class="border-b-2 flex justify-center my-8 transform -translate-y-1/2">
+                    <span class="bg-white transform translate-y-1/2 px-5">
+                        OR
+                        </span>
+                </div>
+                <h2 class="font-montserrat text-lg text-gray-700 font-bold">
+                    Verify Auth File
+                </h2>
+                <p class="mb-5">
+                    Login with your auth file
+                </p>
+                <div
+                    x-effect="if(value.length) $store.verify(value[0])"
+                    x-data="dropzone"
+                    multiple="true"
+                    class="w-full h-40 rounded flex flex-col justify-center items-center"
+                    :class="active ? 'bg-blue-200':'bg-gray-200'"
+                >
+                    <iconify-icon class="text-6xl mb-3" icon="mingcute:upload-fill">
+                    </iconify-icon>
+                    <div class="text-center">
+                        Drag and drop your auth file here
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@end

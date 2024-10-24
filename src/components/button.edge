@@ -1,0 +1,26 @@
+@let(attrs = $props.merge({
+    class: [
+        "h-12",
+        "py-2",
+        "px-4",
+        "rounded",
+        "uppercase",
+        "tracking-widest",
+        "flex",
+        "justify-center",
+        "items-center",
+        "space-x-3"
+    ]
+}).toAttrs())
+
+<button {{ attrs }}>
+    @if($slots.left)
+        {{{ await $slots.left() }}}
+    @end
+    <span>
+        {{{ await $slots.main() }}}
+    </span>
+    @if($slots.right)
+        {{{ await $slots.right() }}}
+    @end
+</button>

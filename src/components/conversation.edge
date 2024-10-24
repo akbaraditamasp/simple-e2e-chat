@@ -1,0 +1,19 @@
+@let(attrs = $props.except(['name','lastChat','class','type']).toAttrs())
+
+<div
+    class="flex justify-start items-center space-x-3 p-2 hover:bg-gray-200 rounded relative"
+>
+    <div
+        class="w-[3.5rem] h-[3.5rem] rounded-full flex justify-center items-center font-montserrat text-2xl font-bold text-white"
+        :style="{ backgroundColor: $store.generateRandomPastelColor() }"
+        x-text="{{ $props.get('name') }}.split(' ').map(part => part[0]).join('').substr(0,2).toUpperCase()"
+    >
+    </div>
+    <div class="flex-1">
+        <div class="font-bold text-gray-800" x-text="{{ $props.get('name') }}">
+        </div>
+        <div class="text-sm" x-text="{{ $props.get('lastChat') }}">
+        </div>
+    </div>
+    <button type="button" class="absolute top-0 left-0 w-full h-full" {{ attrs }}></button>
+</div>

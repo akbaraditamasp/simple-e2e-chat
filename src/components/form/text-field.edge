@@ -1,0 +1,30 @@
+@let(attrs = $props.except(['message', 'containerClassName']).toAttrs())
+@let(bindErrorClass = $props.get('message') ? `:class="${$props.get('message')} ? 'border-red-600':'border-gray-200'"`:"" )
+
+<div class="{{{ $props.get('containerClassName') || '' }}}">
+    @if($props.get('label'))
+        <label>{{ label }}</label>
+    @end
+    <div
+        class="flex items-center justify-start bg-white rounded border overflow-hidden"
+        {{{ bindErrorClass }}}
+    >
+        @if($slots.left)
+            <div class="pl-3 flex justify-center items-center">
+                {{{ await $slots.left() }}}
+            </div>
+        @end
+        <input class="flex-1 h-12 outline-none px-3" {{ attrs }} />
+        @if($slots.right)
+            {{{ await $slots.right() }}}
+        @end
+    </div>
+    @if($props.get('message'))
+        <div
+            class="mt-2 text-sm text-red-600"
+            x-show="{{ $props.get('message') }}"
+            x-text="{{ $props.get('message') }}"
+        >
+        </div>
+    @end
+</div>
