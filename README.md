@@ -1,6 +1,6 @@
-# LamanHub Blank Template
+# Laman.js Blank Template
 
-This template provides a minimal setup to get LamanHub project working.
+This template provides a minimal setup to get Laman.js project working.
 
 ## Run
 
@@ -18,4 +18,4 @@ npm run build
 
 ## Documentation
 
-The documentation is available on the [LamanHub](https://lamanjs.lamanhub.site/docs/what-is-lamanhub.html)
+The documentation is available on the [LamanHub](https://lamanjs.lamanhub.site/docs/introduction.html)
